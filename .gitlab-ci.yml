@@ -1,0 +1,27 @@
+# ---------------------------------------------------------------------------
+# IMLAB
+# ---------------------------------------------------------------------------
+
+stages:
+  - test
+
+tests:
+  stage: test
+  script:
+    - mkdir -p build
+    - cd build
+    - cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
+    - ninja
+    - ./tester --gtest_filter=TPCCTest.*
+    - ./tester --gtest_filter=ParserTest.*
+    - ./tester --gtest_filter=SemanaTest.*
+
+linter:
+  stage: test
+  script:
+    - mkdir -p build
+    - cd build
+    - cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
+    - ninja
+    - ninja lint
+  allow_failure: true
